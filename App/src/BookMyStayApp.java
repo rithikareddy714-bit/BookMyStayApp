@@ -1,43 +1,80 @@
-import static java.lang.IO.println;
-//Use Case 2: Basic Room Types & Static Availability
+import java.util.HashMap;
+import java.util.Map;
 
-abstract class Room {
-
-    // Attributes
-    protected int numberOfBeds;
-    protected int squareFeet;
-    protected double pricePerNight;
-
-    // Constructor
-    public Room(int numberOfBeds, int squareFeet, double pricePerNight) {
-        this.numberOfBeds = numberOfBeds;
-        this.squareFeet = squareFeet;
-        this.pricePerNight = pricePerNight;
-    }
-
-    // Method to display details
-    public void displayRoomDetails() {
-        System.out.println("Number of Beds: " + numberOfBeds);
-        System.out.println("Room Size (sq ft): " + squareFeet);
-        System.out.println("Price per Night: " + pricePerNight);
-    }
-}
-
-// Child class
-class DeluxeRoom extends Room {
-
-    public DeluxeRoom() {
-        super(2, 400, 2500.0);
-    }
-}
-
-// Main class
+/**
+ * BookMyStayApp
+ * Centralized Room Inventory Management System
+ */
 public class BookMyStayApp {
-    public static void main(String[] args) {
-        println("welcome to the hotel booking management system");
-        println("system initialised sucessfully");
-        Room room = new DeluxeRoom();
-        room.displayRoomDetails();
+
+    /**
+     * Inner Class - RoomInventory
+     * Handles all room availability logic
+     */
+    static class RoomInventory {
+
+        // Stores room availability
+        private Map<String, Integer> roomAvailability;
+
+        // Constructor
+        public RoomInventory() {
+            roomAvailability = new HashMap<>();
+            initializeInventory();
+        }
+
+        // Initialize default values
+        private void initializeInventory() {
+            roomAvailability.put("Single", 5);
+            roomAvailability.put("Double", 3);
+            roomAvailability.put("Suite", 2);
+        }
+
+        // Get current availability
+        public Map<String, Integer> getRoomAvailability() {
+            return roomAvailability;
+        }
+
+        // Update availability safely
+        public void updateAvailability(String roomType, int count) {
+            if (roomAvailability.containsKey(roomType)) {
+                roomAvailability.put(roomType, count);
+            } else {
+                System.out.println("Invalid room type!");
+            }
+        }
     }
 
+    /**
+     * Main Method
+     */
+    public static void main(String[] args) {
+
+        RoomInventory inventory = new RoomInventory();
+        Map<String, Integer> availability = inventory.getRoomAvailability();
+
+        System.out.println("Hotel Room Inventory Status\n");
+
+        // Single Room
+        System.out.println("Single Room:");
+        System.out.println("Beds: 1");
+        System.out.println("Size: 250 sqft");
+        System.out.println("Price per night: 1500.0");
+        System.out.println("Available Rooms: " + availability.get("Single"));
+        System.out.println();
+
+        // Double Room
+        System.out.println("Double Room:");
+        System.out.println("Beds: 2");
+        System.out.println("Size: 400 sqft");
+        System.out.println("Price per night: 2500.0");
+        System.out.println("Available Rooms: " + availability.get("Double"));
+        System.out.println();
+
+        // Suite Room
+        System.out.println("Suite Room:");
+        System.out.println("Beds: 3");
+        System.out.println("Size: 750 sqft");
+        System.out.println("Price per night: 5000.0");
+        System.out.println("Available Rooms: " + availability.get("Suite"));
+    }
 }
